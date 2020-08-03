@@ -23,16 +23,19 @@ public class SongController {
     @Autowired
     SongServiceable songServiceable;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "")
     public ResponseEntity<InsertionResponse> audio(@RequestParam("audioFile") MultipartFile[] audio) throws IOException {
-        return new ResponseEntity<>(songServiceable.addSongs(audio), HttpStatus.OK);
+        return new ResponseEntity<>(songServiceable.addSongs("artist1", audio), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "")
     public ResponseEntity<ListSong> deleteAudio(@RequestBody ListSong songsToDelete){
         return new ResponseEntity<>(songServiceable.deleteSongs(songsToDelete), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_PREMIUM')")
     @GetMapping(value = "{songId}")
     public ResponseEntity<Song> retrieveSong(@PathVariable String songId){
         return new ResponseEntity<>(songServiceable.getSong(songId), HttpStatus.OK);
@@ -43,6 +46,7 @@ public class SongController {
         return new ResponseEntity<>(songServiceable.getSongDetails(songs), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping(value = "edit")
     public ResponseEntity<Song> editSong(@RequestBody Song songEdit) {
         return new ResponseEntity<>(songServiceable.modifySongDetail(songEdit), HttpStatus.OK);

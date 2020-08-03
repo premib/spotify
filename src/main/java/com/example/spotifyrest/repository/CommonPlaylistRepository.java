@@ -6,4 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface CommonPlaylistRepository extends MongoRepository<CommonPlaylistDocument, String> {
 
     public boolean existsByPlaylistName(String playlistName);
+
+    public CommonPlaylistDocument findByPlaylistName(String playlinstName);
 }

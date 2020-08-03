@@ -4,15 +4,12 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.ToString;
 
-import java.util.List;
-
 @Data
 @ToString
-public class ArtistSongs {
+public class Artist {
 
     @NonNull
     private String artistName;
 
-    @NonNull
-    private List<String> songIds;
+    private String artistDescription;
 }

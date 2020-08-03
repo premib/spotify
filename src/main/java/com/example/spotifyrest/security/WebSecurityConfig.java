@@ -3,6 +3,7 @@ package com.example.spotifyrest.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +30,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/v1/auth/**").permitAll()
 //            .antMatchers("/admin/**").permitAll()
 //            .antMatchers("/v1/user/**").hasRole("USER")
+            .antMatchers("v1/user/login").permitAll()
+            .antMatchers("v1/user/register").permitAll()
+            .antMatchers(HttpMethod.GET, "v1/playlist/**").permitAll()
+            .antMatchers(HttpMethod.GET, "v1/playlist/name/**").permitAll()
+            .antMatchers(HttpMethod.GET, "v1/playlist/**/details").permitAll()
         .anyRequest().permitAll();
 
     // Add JWT Filter
