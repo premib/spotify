@@ -25,7 +25,7 @@ public class JWTFilter extends OncePerRequestFilter {
     httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
     httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
-    httpServletResponse.setHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token");
+    httpServletResponse.setHeader("Access-Control-Allow-Headers", "*");
     httpServletResponse.addHeader("Access-Control-Expose-Headers", "xsrf-token");
 
     String token = jwtProvider.resolveToken(httpServletRequest);
