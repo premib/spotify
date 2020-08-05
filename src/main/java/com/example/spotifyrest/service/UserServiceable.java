@@ -19,6 +19,10 @@ public interface UserServiceable {
 
     ListSong deleteSongFromCustomPlaylist(String playlistName, String email, ListSong songIds);
 
+    String followArtist(String artistId, String email);
+
+    String unFollowArtist(String artistId, String email);
+
     String deleteCustomPlaylist(String playlistName, String email);
 
     AuthResponse upgradeToPremium(String email);

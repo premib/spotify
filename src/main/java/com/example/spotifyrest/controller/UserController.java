@@ -112,4 +112,28 @@ public class UserController {
             throw new ServiceException("Not a registered user/ Token expired, login again" + e, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @PutMapping(value = "artist/{artistId}")
+    public ResponseEntity<String> userFollowsArtist(@PathVariable String artistId){
+
+        try{
+            Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+            return new ResponseEntity<>(userServiceable.followArtist(artistId, authentication.getName()), HttpStatus.OK);
+        }
+        catch (AuthenticationException e){
+            throw new ServiceException("Not a registered user/ Token expired, login again" + e, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @DeleteMapping(value = "artist/{artistId}")
+    public ResponseEntity<String> userUnFollowArtist(@PathVariable String artistId){
+
+        try{
+            Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+            return new ResponseEntity<>(userServiceable.unFollowArtist(artistId, authentication.getName()), HttpStatus.OK);
+        }
+        catch (AuthenticationException e){
+            throw new ServiceException("Not a registered user/ Token expired, login again" + e, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

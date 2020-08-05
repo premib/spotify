@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.HashMap;
+import java.util.HashSet;
 
 @Entity
 @Document("customPlaylist")
@@ -18,5 +19,7 @@ public class CustomPlaylistDocument{
     private String id;
 
     private HashMap<String, String[]> playlists;
+
+    private HashSet<String> followedArtists;
 
 }

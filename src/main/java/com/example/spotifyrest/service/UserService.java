@@ -215,7 +215,62 @@ public class UserService implements UserServiceable{
             }
         }
         else{
-            throw new ServiceException("Read account details", HttpStatus.FAILED_DEPENDENCY);
+            throw new ServiceException("Re-edit account details", HttpStatus.FAILED_DEPENDENCY);
+        }
+    }
+
+    @Override
+    public String followArtist(String artistId, String email){
+
+        Optional<AccountsDetailTable> currentUser = accountsDetailRepository.findById(email);
+
+        if(currentUser.isPresent()){
+
+            Optional<CustomPlaylistDocument> userCustomPlaylist = customPlaylistRepository
+                    .findById(currentUser.get().getCustomPlaylistMongoId());
+
+            if(userCustomPlaylist.isPresent()){
+                if (userCustomPlaylist.get().getFollowedArtists() == null) {
+                    userCustomPlaylist.get().setFollowedArtists(new HashSet<>());
+                }
+                userCustomPlaylist.get().getFollowedArtists().add(artistId);
+            }
+            else {
+                createNewPlaylistMongoId(email, false);
+                return followArtist(artistId, email);
+            }
+
+            return customPlaylistRepository.save(userCustomPlaylist.get()).getId();
+        }
+        else {
+            throw new ServiceException("Account not found, try re-editting account details", HttpStatus.FAILED_DEPENDENCY);
+        }
+    }
+
+    @Override
+    public String unFollowArtist(String artistId, String email){
+
+        Optional<AccountsDetailTable> currentUser = accountsDetailRepository.findById(email);
+
+        if(currentUser.isPresent()){
+
+            Optional<CustomPlaylistDocument> userCustomPlaylist = customPlaylistRepository
+                    .findById(currentUser.get().getCustomPlaylistMongoId());
+
+            if(userCustomPlaylist.isPresent()){
+                if (userCustomPlaylist.get().getFollowedArtists() == null)
+                    throw new ServiceException("Artist not found in your favourite list", HttpStatus.BAD_REQUEST);
+                userCustomPlaylist.get().getFollowedArtists().remove(artistId);
+            }
+            else {
+                createNewPlaylistMongoId(email, false);
+                return followArtist(artistId, email);
+            }
+
+            return customPlaylistRepository.save(userCustomPlaylist.get()).getId();
+        }
+        else {
+            throw new ServiceException("Account not found, try re-editting account details", HttpStatus.FAILED_DEPENDENCY);
         }
     }
 
